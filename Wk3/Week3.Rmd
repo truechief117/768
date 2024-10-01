@@ -1,0 +1,116 @@
+---
+title: "R Notebook -- Smooth Cumulative Function Estimation"
+output: html_notebook
+---
+
+
+
+```{r}
+library(np)
+options(np.messages=FALSE,plot.par.mfrow=FALSE)
+set.seed(42)
+x <- sort(rbinom(1000,25,.5))
+par(mfrow=c(1,2))
+plot(ecdf(x),xlab="$x$",ylab="$F_n(x)$",ylim=c(0,1),main=NA)
+## Here we use the npudist() function to compute the nonsmooth nonparametric
+## estimate using the data frame interface
+Fhat <- npudist(tdat=ordered(x),edat=ordered(unique(x)),bws=0)
+lines(unique(x),fitted(Fhat),type="s",lty=2,col=2)
+legend("topleft",c("$F_n(x)$","$\\hat F(x)$ (nonsmooth, $\\lambda = 0$)"),
+       lty=c(NA,2),pch=c(19,NA),col=c(1,2),bty="n")
+## Here we use the npudist() function to compute the smooth nonparametric
+## estimate using the data frame interface
+lambda=0.5
+Fhat.smooth <- npudist(tdat=ordered(x),edat=ordered(unique(x)),bws=lambda)
+plot(unique(x),fitted(Fhat.smooth),xlab="$x$",ylab="$\\hat F(x)$",ylim=c(0,1),pch=19)
+lines(unique(x),fitted(Fhat),type="s",lty=2,col=2)
+legend("topleft",c(paste("$\\hat F(x)$ (smooth, $\\lambda = ",lambda,"$)",sep=""),
+                   "$\\hat F(x)$ (nonsmooth, $\\lambda = 0$)"),
+       lty=c(NA,2),pch=c(19,NA),col=c(1,2),bty="n")
+```
+
+
+```{r}
+library(np)
+options(np.messages=FALSE,plot.par.mfrow=FALSE)
+set.seed(42)
+x <- ordered(rbinom(1000,10,.5))
+y <- ordered(rbinom(1000,15,.5))
+phat <- npudens(~x+y)
+Fhat <- npudist(~x+y)
+par(mfrow=c(1,2))
+plot(phat,view="fixed",col=NA,main="")
+plot(Fhat,view="fixed",col=NA,main="")
+
+```
+
+
+Week 3 Chapter 2
+
+```{r}
+
+## Normal density estimate for the eruptions data
+f.normal <- with(faithful,dnorm(eruptions,mean=mean(eruptions),sd=sd(eruptions)))
+plot(faithful$eruptions[order(faithful$eruptions)],f.normal[order(faithful$eruptions)],
+     xlab="Eruption Length (min)",
+     ylab="Density Estimate",
+     xlim=c(0,6),
+     ylim=c(0,0.7),
+     type="l",
+     main="",
+     lwd=2)
+rug(faithful$eruptions)
+```
+
+Notice that you would expect this to be bimodal... However, it shows a normal distribution. So what is going on? 
+
+If we use a shapiro test of normality, we find that there is a strong rejection that the normal distribution!!
+
+We can look at the histogram of the data to see that it is bimodal. 
+
+```{r}
+
+hist(faithful$eruptions,prob=TRUE,main="",xlab="Eruption Length (min)",ylim=c(0,0.7))
+lines(density(faithful$eruptions),lwd=2)
+rug(faithful$eruptions)
+```
+```{r}
+## Histogram density estimate for the eruptions data
+with(faithful,hist(eruptions,
+                   xlab="Eruption Length (min)",
+                   ylab="Density Estimate",
+                   xlim=c(0,6),
+                   ylim=c(0,0.7),
+                   nclass=15,
+                   main="",
+                   freq=FALSE))
+lines(density(faithful$eruptions),lwd=2)
+rug(faithful$eruptions)
+```
+
+
+
+Naive Density Estimation
+
+```{r}
+library(np)
+
+## Naive estimator for the eruptions data (Fix and Hodges (1951), Silverman page 13 h=0.25)
+bw <- npudensbw(~eruptions,
+                ckertype="uniform",
+                bws=0.25,
+                bandwidth.compute=FALSE,
+                data=faithful)
+fhat <- fitted(npudens(bws=bw))
+with(faithful,plot(eruptions[order(eruptions)],fhat[order(eruptions)],
+                   xlim=c(0,6),
+                   ylim=c(0,0.7),
+                   xlab="Eruption Length (min)",
+                   ylab="Density Estimate",
+                   main="",
+                   type="S",
+                   lwd=2))
+rug(faithful$eruptions)
+
+
+```

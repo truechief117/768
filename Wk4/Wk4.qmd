@@ -1,0 +1,87 @@
+---
+title: "Week4_Day1"
+format: pdf
+editor: visual
+---
+
+## Week 4 Day 1
+
+```{r}
+x <- seq(-4,4,by=.1)
+plot(x,dunif(x,-1,1),type="l",ylab="Weight Function w(z)",xlab="z")
+```
+
+```{r}
+library(np)
+
+## Naive estimator for the eruptions data (Fix and Hodges (1951), Silverman page 13 h=0.25)
+bw <- npudensbw(~eruptions,
+                ckertype="uniform",
+                bws=0.25,
+                bandwidth.compute=FALSE,
+                data=faithful)
+fhat <- fitted(npudens(bws=bw))
+with(faithful,plot(eruptions[order(eruptions)],fhat[order(eruptions)],
+                   xlim=c(0,6),
+                   ylim=c(0,0.7),
+                   xlab="Eruption Length (min)",
+                   ylab="Density Estimate",
+                   main="",
+                   type="S",
+                   lwd=2))
+rug(faithful$eruptions)
+
+
+```
+```{r}
+x <- seq(-4,4,by=.1)
+plot(x,dunif(x,-1,1),type="l",ylab="Kernel Function k(z)",xlab="z")
+lines(x,dnorm(x),lty=2)
+legend("topright",c("Uniform","Gaussian"),lty=c(1,2),bty="n")
+```
+
+
+```{r}
+
+library(np)
+## Kernel estimator for the eruptions data (Rosenblatt (1956), Parzen (1962))
+bw <- npudensbw(~eruptions,
+                ckertype="gaussian",
+                bws=0.25,
+                bandwidth.compute=FALSE,
+                data=faithful)
+fhat <- fitted(npudens(bws=bw))
+with(faithful,plot(eruptions[order(eruptions)],fhat[order(eruptions)],
+                   xlim=c(0,6),
+                   ylim=c(0,0.7),
+                   xlab="Eruption Length (min)",
+                   ylab="Density Estimate",
+                   main="",
+                   type="l",
+                   lwd=2))
+rug(faithful$eruptions)
+```
+
+
+
+We use the Kernel Density estimator because they have the fundamental property of CONSISTENCY. This means that as the sample size increases, the estimator converges to the true density function. 
+```{r}
+
+x <- seq(0, 10, by=0.1)
+plot(x, dchisq(x, df=5), type="l", ylab="Density", xlab="x")
+plot(x, dchisq(x, df=4), type="l", ylab="Density", xlab="x")
+
+x <- seq(0, 25, by=0.1)
+plot(x, dchisq(x, df=5), type="l", ylab="Density", xlab="x")
+plot(x, dchisq(x, df=4), type="l", ylab="Density", xlab="x")
+
+x.sample<- rchisq(100000, df=5)
+
+plot(density(x.sample), main="Density Estimation of Chi-Square(5)", xlab="x", ylab="Density")
+lines(x,dchisq(x, df=5), col="red")
+
+```
+
+
+
+

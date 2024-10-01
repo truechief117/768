@@ -1,0 +1,209 @@
+---
+title: "First Order of Business in ECON 768"
+author: "Keith Roberts - 400279646"
+date: "`r Sys.Date()`"
+date-format: full
+format: pdf
+editor: visual
+thanks: "`r paste(Sys.info()[4:6])`"
+---
+
+**Please Note:** While this document makes explicit the instruction to edit the title of the document, the A2L description of the task only requires edits to the "author" and "date" preambles. I have therefore chosen to go by the A2L instruction and *have not* changed the document title.
+
+------------------------------------------------------------------------
+
+## Your First Task in ECON 768
+
+This document is a Quarto Markdown file that integrates R code and narrative text into a single file, facilitating the generation of a PDF output.
+
+When you open this file in RStudio you will see the raw text appear in the RStudio editor (this is the \`Source\` view in the editor, alternatively you can use the \`Visual\` view by selecting the \`Visual\` button in the RStudio editor pane). The first few lines of this file contain special instructions for the file that will be generated. *Your first task is to edit the title, author, and date fields using the RStudio editor and insert appropriate text inside the quotes that currently exist deleting the current entries in so doing.* Then you are to render this document (rendering produces an output file) by clicking on the \`Render\` button. The first time you attempt this you may be asked for permission to download some files (select *Yes*, i.e., *allow*, or click *install* if prompted) and after a few minutes (you need to be connected to the web) files will be downloaded and installed.Once you successfully produce the PDF you can pat yourself on the back as you have successfully installed the software necessary for you to complete assignments in this course.
+
+This document contains numerous examples that you can refer to regarding *how to do XXX*, so do take a look at how the figures and tables etc. are written in Quarto Markdown as this will serve as a template for completing some parts of the assignment.
+
+*For your first task to be complete, you must first download this Quarto Markdown file from ATL, then upload two files; i) your edited version of Quarto Markdown file (i.e., this file with your edits to title, author, and date), and ii) the PDF file produced when you render this file to ATL.*
+
+## R and RStudio
+
+We will be using R, a language and environment for statistical computing and graphics (see [www.r-project.org](https://www.r-project.org)), and RStudio, an integrated development environment for R (see [posit.co](https://posit.co/download/rstudio-desktop/)). Both of these programs must be installed on your computer in order to work with this document, work on assignments etc. These powerful, free, and open source programs allow you to work anywhere and anytime you wish and not be tethered to a lab running closed, licensed proprietary software.
+
+## What is Quarto Markdown?
+
+This is an Quarto Markdown document. Quarto Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents in RStudio. For more details on using Quarto Markdown see [quarto.org](https://quarto.org).
+
+Although you might not realize it, by using Quarto Markdown you are in fact conducting *reproducible research* (the idea that others may readily verify your findings and build upon them) since your code and narrative involve only one file (your Quarto Markdown file). For your viewing pleasure see [A reproducibility horror story!](https://blog.revolutionanalytics.com/2016/08/a-reproducibility-horror-story.html)
+
+## Creating a new Quarto Markdown Document in RStudio
+
+From within RStudio navigate to the menu **File -\> New File -\> Quarto Document**, in the `New Quarto Document` dialog enter **Title** and **Author**, select **PDF** then click **Create Empty Document** and you will be presented with a clean slate to work with.
+
+## Including R Results in your Quarto Markdown Document
+
+To include results generated from your R commands in your Quarto Markdown document, starting in RStudio click on the **Insert a new code chunk** button (green C with a plus sign) from within the **Editor** pane (upper left pane in RStudio by default), then write your code inside the \`chunk' that is inserted. If you want to run the code inside the chunk, simply click on the **Run** button and select the appropriate run argument.
+
+You can also embed an R code chunk manually (make a code chunk with three back ticks followed by an r in braces; end the chunk with three back ticks).
+
+## Reading data from a URL
+
+R can read data from a URL saving you from manually downloading the data in certain instances:
+
+```{r}
+course <- read.table("https://jeffreyracine.github.io/2B03/attend.RData")
+## attach() makes the names of the data `course' known to R functions (scope)
+attach(course)
+```
+
+You can summarize data in your Quarto Markdown document:
+
+```{r}
+summary(course)
+```
+
+## Including Plots
+
+You can also embed simple scatter plots in your Quarto Markdown document, for example:
+
+```{r}
+plot(attend,grade,
+     ylab="2B03 Grade, Fall 2013",
+     xlab="# Times Present in Class When Assignments/Exams Returned",
+     main="2B03 Grades and Class Attendance")
+```
+
+```{r}
+#| echo: false
+hist(grade)
+rug(grade)
+```
+
+(Note that the `#| echo: false` option was added to the code chunk to prevent printing of the R code that generated the plot. Note that grades \> 100 are possible due to bonus marks being awarded for using Quarto Markdown for generating your assignments.
+
+## Including Bulleted and Numbered lists
+
+Making lists in Quarto Markdown is simple providing you pay close attention to the Markdown convention:
+
+-   Bulleted lists are created by starting the line with a dash
+
+    -   To create sub lists indent four spaces then start with a dash
+
+        If you want text to appear below a list item, create a a blank line and then indent an *additional* four more spaces beyond the spacing of the previous item
+
+-   Next item
+
+1.  Numbered lists start with a number followed by a period
+
+    (i) Sub items are indented four spaces and start with e.g. (i) (or (a) if you prefer)
+
+        If you want text to appear below a list item create a blank line and then indent an *additional* four more spaces beyond the spacing of the previous item
+
+2.  Next item
+
+See Troubleshooting and Tips below for further information.
+
+## Including Tables
+
+Creating tables is straightforward as the following two examples demonstrate:
+
+| Table Header | Second Header | Third Header |
+|--------------|---------------|--------------|
+| Table Cell 1 | Cell 2        | Cell 3       |
+| Cell 4       | Cell 5        | Cell 6       |
+
+| Centered Header | Default Aligned | Right Aligned | Left Aligned                                          |
+|:---------------:|-----------------|--------------:|:------------------------------------------------------|
+|      First      | row             |          12.0 | Example of a row that spans multiple lines.           |
+|     Second      | row             |           5.0 | Here's another one. Note the blank line between rows. |
+
+: Here's the caption. It, too, may span multiple lines.
+
+For guidance on creating the above table and more sophisticated tables using Quarto Markdown see [Creating Tables in Quarto](https://quarto.org/docs/authoring/tables.html).
+
+## Including Verbatim (i.e. freeform) Text
+
+You can include text that appears *exactly* as you type it in your document by enclosing the code chunk with three backticks at the top and bottom:
+
+```         
+  This         is verbatim x1       x2
+          x3
+```
+
+## Rendering your Quarto Markdown Document
+
+When you click the **Render** button from within RStudio (this button should appear in the top left pane in RStudio by default), a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Flexible Document Creation
+
+It is worth noting that your document does not have to be related to the R language in order to use Markdown. Your document can in fact use other computing languages (C++, SQL, Python, etc.), and it can even be totally unrelated to conducting statistical analysis (for instance, you might write a story, book, or collection of poems).
+
+## Printing Your Assignment for Submitting in Class
+
+-   You can **spell-check** your assignment before handing it in by navigating the menu **Edit -\> Check Spelling**
+
+-   The default format (set in the header of this Quarto file) is `format: pdf`, which is what you want to submit to ATL
+
+-   If you have Microsoft Word installed on your system, to render your Quarto Markdown document in Word format, simply change the output format from `format: pdf` to `format: docx` in the header at the top of your Quarto document then click the **Render** button and, if all goes well, you will be presented with a Word document that you can print using Word's print facilities (this Word document will remain in your working directory)
+
+## Typesetting Mathematics
+
+If you installed TeX on your computer, then you will see that Quarto Markdown supports mathematics typesetting using. So you can type math inline using the standard approach, e.g., in the `Source` editor enclose your TeX equation commands such as `$\sum_{i=1}^n(X_i-\bar X)^2/n$` in single dollar signs which will produce $\sum_{i=1}^n(X_i-\bar X)^2/n$ in a paragraph. Or, to have your TeX equation appear on a separate line you enclose it in double dollar signs (e.g. `$$\frac{1}{n}\sum_{i=1}^n(X_i-\bar X)^2.$$`) which will produce $$\frac{1}{n}\sum_{i=1}^n(X_i-\bar X)^2.$$
+
+Alternately, in the `Source` editor you can use `\(` and `\)` to enclose your TeX equation commands instead of single dollar signs (and `\[` and `\]` instead of double dollar signs).
+
+Or, alternately, you can use the `Visual` editor and pull down the `Insert` menu option `LaTeX Math`.
+
+Of course, whether rendering your final document in HTML, PDF, MS Word etc. the translation of the math you authored using TeX/LaTeX will be handled transparently using the underlying universal document converter *pandoc* ([pandoc.org](https://pandoc.org)) when you render your document.
+
+Objects such as $p(A\cap B)$ and $p(A\cup B)$ can be typeset via `$p(A\cap B)$` and `$p(A\cup B)$`, or that $p(\bar A|B)$ can be typeset as `$p(\bar A|B)$` and so on.
+
+Objects such as ${n \choose x}\pi^{x}(1-\pi)^{n-x}$ can be typeset via `${n \choose x}\pi^{x}(1-\pi)^{n-x}$`, and you can compute actual results inline *and* typeset the mathematics such as $Pr(X=2)={5 \choose 2}0.4^{2}(1-0.4)^{3}=`r dbinom(2,5,.4)`$ via `$Pr(X=2)={5 \choose 2}0.4^{2}(1-0.4)^{3}=` `` `r '\x60r dbinom(2,5,.4)\x60'` `` `$`.
+
+The following link will give you some helpful pointers for typesetting mathematics using TeX/LaTeX: [Link to LaTeX/Mathematics](https://en.wikibooks.org/wiki/LaTeX/Mathematics).
+
+## Troubleshooting and Tips
+
+1.  If you are having trouble with R, or RStudio after you installed them, one reason for this could be that you did not use the default paths for the installation. If you overrode the defaults and experience trouble, try properly removing and re-installing *this time using the defaults*
+
+2.  If your PDF output generated when you *Render* a PDF document appears in a separate window and *not* in the Viewer Pane (lower right window in RStudio), check the settings found in the RStudio menu *Tools -\> Global Options -\> R markdown* then set *Show output preview in:* to *Viewer Pane*
+
+3.  Authoring in Markdown can take a bit of getting used to, particularly when making bulleted or numbered lists (which you will likely use for your assignment). Sometimes it is easier to work in the `Source` editor, and these instructions are helpful when working in `Source` editing mode:
+
+    -   You must start a numbered list in column 1, with e.g. the number 1 followed by a period, e.g. `1.`, where, ideally, the `1.` is proceeded by 2 spaces so that the text that follows begins in column 5 as in `1.  The`
+
+    -   If you want text, an R code chunk, or anything else to line up properly under `1.` then everything on the lines that follow *must* be indented 4 spaces (i.e. start in column 5), and align with the first character appearing after you started the numbered list (e.g., the `T` chararacter in `1.  The`, where the `T` character appears in the fifth column)
+
+    -   If you use the tab key to insert spaces, by default a tab takes you only 2 spaces so you need to tab twice to get 4 spaces (or you can change the default by navigating **Tools -\> Global Options -\> Code -\> Tab Width** and change `2` to `4`)
+
+    -   If you have a sublist (e.g. after `1.` you wish `(a)` to be properly indented using Markdown) your `(a)` must start in column 5, and again if you want text, an R code chunk, or anything else to line up properly under `(a)` everything *must* be further indented another 4 spaces (i.e. start in column 9)
+
+    -   Note that you can select multiple lines of code then hit tab once or twice and it will indent all of the lines that you selected
+
+    -   If you have an item or subitem (e.g. `1.` or `(a)`) with no text appearing after the item, then indented R code chunks that immediately follow on the next line might not display properly (e.g. where you have indented the entire chunk including the backticks); one simple solution is to add some descriptive text like `1. Answer` and `(a) R Code` and so forth
+
+    -   If you create a list and e.g. `(a)` does not appear, it could be because you have text following `(a)` that has no space as in `(a)my text` - a space is needed
+
+    -   Spacing and linebreaks are needed for proper formatting of Quarto Markdown documents, so if things do not render as you expect try adding e.g. a blank line etc.
+
+4.  Sometimes things get messed up and you need to clean up intermediate files generated while rendering (e.g. your code looks fine but is producing an error). To do so click on the Gear button beside the render button in the editor pane (upper left pane by default) and clear the cache i.e. **Gear -\> Clear All Output**
+
+5.  Sometimes people have old versions of R and RStudio lingering on their system from previous courses and things are not working as expected... it never hurts to make sure you have the latest versions installed (and also update all packages on your system via the update button on the **Packages -\> Update** tab which appears in the lower right pane by default)
+
+6.  Your Quarto Markdown file needs to have the extension `qmd` (don't create arbitrarily named files)
+
+7.  If you are having difficulty reading data files that are located in a different directory from your Quarto Markdown file, simply place the `qmd` file and data file in the same directory
+
+    -   Alternately, after changing your working directory (**Session -\> Set Working Directory**), from the *console* pane (lower left by default) type `getwd()` which should reveal the directory where your file is (e.g. `"/foo"`), and then enter the line `setwd("/foo")` in the line just above your call to `read.table()`
+
+    -   Alternately, append this directory to the call where you read the data (e.g. instead of `read.table("filename")` use `read.table("/foo/filename")`
+
+    -   For the hard core among you, you could modify the `root directory` via adding an R code chunk at the beginning of your document adding the R code `opts_knit$set(root.dir = "/foo")`
+
+8.  In the `Source` editor, chunks of R code begin and end with three backticks, and there *must* be a blank line between two consecutive chunks of R code (i.e. you can't have three backticks at the end of one code chunk *touch* the three backticks of the next line)
+
+9.  Your R code must reside inside an R code chunk (see the **Insert a new code chunk** button in the editor pane (green C) in order for it to be processed as R code (otherwise Quarto Markdown will think it is text)
+
+10. If a hint is provided preceded by a question mark as in `?fivenum` this means to enter `?fivenum` in the console which will pull up help for the R function `fivenum`
+
+11. Typeset mathematics is *not* to be placed inside of R code chunks (it will throw an error since the dollar sign has a special meaning in R) nor are Quarto Markdown tables and other such things
+
+12. The default editor settings are to *insert matching parentheses and quotes*; if you find that this intrudes on your workflow, you can disable it via **Tools -\> Global Options -\> Code** then uncheck **Insert matching parens/quotes**
+
+13. Markdown does not like spaces immediately following display math, so use `$$\alpha$$` rather than `$$ \alpha $$`
